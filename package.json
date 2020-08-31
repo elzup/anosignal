@@ -6,29 +6,30 @@
   "engines": {
     "node": ">=10"
   },
-  "scripts": {},
+  "scripts": {
+    "cli": "ts-node src/cli.ts",
+    "test": "jest"
+  },
   "files": [
-    "cli.js",
-    "ui.js"
+    "dist"
   ],
   "dependencies": {
     "import-jsx": "^4.0.0",
     "ink": "^3.0.4",
+    "ink-gradient": "^2.0.0",
+    "jest": "^26.4.2",
     "meow": "^7.1.1",
-    "react": "^16.13.1"
+    "react": "^16.13.1",
+    "typescript": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-react": "^7.10.4",
-    "@babel/register": "^7.10.5",
+    "@types/chalk": "^2.2.0",
+    "@types/node": "^14.6.2",
+    "@types/react": "^16.9.48",
     "chalk": "^4.1.0",
     "eslint-config-nzap": "3.2.0",
-    "ink-testing-library": "^2.0.1"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react"
-    ]
+    "ink-testing-library": "^2.0.1",
+    "ts-jest": "^26.3.0",
+    "ts-node": "^9.0.0"
   }
 }
