@@ -1,6 +1,8 @@
 import { Box, Text, Spacer } from 'ink'
 import * as React from 'react'
 import { useSeconds } from 'use-seconds'
+import crypto from 'crypto'
+import { randchr } from './util'
 
 const { useState, useEffect } = React
 type Writeable<T> = { -readonly [P in keyof T]: T[P] }
@@ -43,6 +45,18 @@ function toHexTime(date: Date) {
   return `${h}${m}${s}`
 }
 
+function toHash(d: Date) {
+  return [...Array(16).keys()]
+    .map((i) => randchr(+d / 1000 - i, 'acemnorsuvwxz'))
+    .join('')
+}
+
+function toHash2(d: Date) {
+  return [...Array(16).keys()]
+    .map((i) => randchr(+d / 1000 - i, 'ABCDOPQR46890'))
+    .join('')
+}
+
 const Time = () => {
   const [clock, date] = useClock()
   return (
@@ -50,9 +64,13 @@ const Time = () => {
       <Box>
         <Text>{clock}</Text>
       </Box>
-      <Box>
+      <Box flexDirection="column">
+        <Text>{+date / 1000}</Text>
+        <Spacer />
         <Text>{toHexTime(date)}</Text>
         <Spacer />
+        <Text>{toHash(date)}</Text>
+        <Text>{toHash2(date)}</Text>
       </Box>
     </Box>
   )
