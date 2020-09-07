@@ -7,14 +7,13 @@ function useTime() {
   return s
 }
 
-const App = ({ name = 'Stranger' }) => {
+const Time = ({ name = 'Stranger' }) => {
   const time = useTime()
-  console.log(time)
   return (
     <Box>
-      <Text>{time}</Text>
+      <Text>{time[0].toString()}</Text>
     </Box>
   )
 }
 
-export default App
+export default Time
