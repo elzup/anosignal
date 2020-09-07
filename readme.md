@@ -12,14 +12,4 @@ $ npm install --global anosignal
 
 ```
 $ anosignal --help
-
-  Usage
-    $ anosignal
-
-  Options
-    --name  Your name
-
-  Examples
-    $ anosignal --name=Jane
-    Hello, Jane
 ```
