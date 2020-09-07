@@ -1,4 +1,4 @@
-import { Box, Text } from 'ink'
+import { Box, Text, Spacer } from 'ink'
 import * as React from 'react'
 import { useSeconds } from 'use-seconds'
 
@@ -32,14 +32,28 @@ function useClock() {
   useEffect(() => {
     setClock(anologClock(h, m))
   }, [h, m])
-  return clock
+  return [clock, date] as const
+}
+
+const padHex = (n: number) => (n + 12).toString(36)
+function toHexTime(date: Date) {
+  const h = padHex(date.getHours())
+  const m = padHex(date.getMinutes()).padStart(2, '0')
+  const s = padHex(date.getSeconds()).padStart(2, '0')
+  return `${h}${m}${s}`
 }
 
 const Time = () => {
-  const clock = useClock()
+  const [clock, date] = useClock()
   return (
     <Box>
-      <Text>{clock}</Text>
+      <Box>
+        <Text>{clock}</Text>
+      </Box>
+      <Box>
+        <Text>{toHexTime(date)}</Text>
+        <Spacer />
+      </Box>
     </Box>
   )
 }
