@@ -4,7 +4,6 @@ import { useSeconds } from 'use-seconds'
 import { randchr } from './util'
 
 const { useState, useEffect } = React
-type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 
 function anologClock(h: number, m: number): string {
   const lines = [
