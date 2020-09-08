@@ -52,32 +52,38 @@ function toHexTime(date: Date) {
   return `${h}${m}${s}`
 }
 
-function toHash(d: Date) {
+function toHash(sec: number) {
   return [...Array(16).keys()]
-    .map((i) => randchr(+d / 1000 - i, 'acemnorsuvwxz'))
+    .map((i) => randchr(sec - i, 'acemnorsuvwxz'))
     .join('')
 }
 
-function toHash2(d: Date) {
+function toHash2(sec: number) {
   return [...Array(16).keys()]
-    .map((i) => randchr(+d / 1000 - i, 'ABCDOPQR46890'))
+    .map((i) => randchr(sec - i, 'ABCDOPQR46890'))
     .join('')
 }
 
 const Time = () => {
   const [clock, date] = useClock()
+  const sec = Math.floor(+date / 1000)
   return (
     <Box>
       <Box>
         <Text>{clock}</Text>
       </Box>
       <Box flexDirection="column">
-        <Text>{+date / 1000}</Text>
+        <Text>{sec}</Text>
         <Spacer />
         <Text>{toHexTime(date)}</Text>
         <Spacer />
-        <Text>{toHash(date)}</Text>
-        <Text>{toHash2(date)}</Text>
+        <Text>{toHash(sec)}</Text>
+        <Text>{toHash2(sec)}</Text>
+        <Text>{sec.toString(2)}</Text>
+        <Text>{sec.toString(4)}</Text>
+        <Text>{sec.toString(8)}</Text>
+        <Text>{sec.toString(16)}</Text>
+        <Text>{sec.toString(36)}</Text>
       </Box>
     </Box>
   )
