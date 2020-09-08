@@ -67,6 +67,8 @@ function toHash2(sec: number) {
 const Time = () => {
   const [clock, date] = useClock()
   const sec = Math.floor(+date / 1000)
+  const amount = 2147483647 - sec
+
   return (
     <Box>
       <Box>
@@ -79,11 +81,12 @@ const Time = () => {
         <Spacer />
         <Text>{toHash(sec)}</Text>
         <Text>{toHash2(sec)}</Text>
-        <Text>{sec.toString(2)}</Text>
+        <Text>0b{sec.toString(2)}</Text>
         <Text>{sec.toString(4)}</Text>
-        <Text>{sec.toString(8)}</Text>
-        <Text>{sec.toString(16)}</Text>
+        <Text>0{sec.toString(8)}</Text>
+        <Text>0x{sec.toString(16)}</Text>
         <Text>{sec.toString(36)}</Text>
+        <Text>2038_-{amount}</Text>
       </Box>
     </Box>
   )
