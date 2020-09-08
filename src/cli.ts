@@ -14,4 +14,4 @@ const cli = meow(`
 	  Hello, Jane
 `)
 
-main((cli.flags['name'] as string) || 'Stranger')
+main()

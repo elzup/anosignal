@@ -1,7 +1,6 @@
-import { Box, Text, Spacer } from 'ink'
+import { Box, Spacer, Text } from 'ink'
 import * as React from 'react'
 import { useSeconds } from 'use-seconds'
-import crypto from 'crypto'
 import { randchr } from './util'
 
 const { useState, useEffect } = React
