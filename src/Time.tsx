@@ -1,13 +1,13 @@
-import { Box, Spacer, Text } from 'ink'
+import { Box, Text } from 'ink'
 import * as React from 'react'
 import { useSeconds } from 'use-seconds'
 import { randchr } from './util'
 
 const { useState, useEffect } = React
 
-function anologClock(h: number, m: number): string {
+function makeAnologHourClock(h: number): string {
   const lines = [
-    [...`┏━━┻━┓`], // base
+    [...`┏━━━┻┓`], // base
     [...`┗━━━┓┃`],
     [...`┏━┻━┛┃`],
     [...`┗━━━━┛`],
@@ -27,20 +27,48 @@ function anologClock(h: number, m: number): string {
     lines[i][hi] = '#'
     return lines[i].join('')
   })
-  return clockLines.map((s) => `|${s}|`).join('\n')
+  return clockLines.join('\n')
+}
+
+const SIZE_X = 10
+const SIZE_Y = 6
+const range = (v: number) => [...Array(v).keys()]
+function makeGridClock(date: Date): string {
+  const xa = range(SIZE_X)
+  const ya = range(SIZE_Y)
+  const m = date.getMinutes()
+  const s = date.getSeconds()
+  const x1 = Math.floor(m % SIZE_X)
+  const y1 = Math.floor(m / SIZE_X)
+  const x2 = Math.floor(s % SIZE_X)
+  const y2 = Math.floor(s / SIZE_X)
+  const bo = ya.map(() => xa.map(() => '.'))
+
+  ya.forEach((y) => (bo[y][x2] = '|'))
+  xa.forEach((x) => (bo[y2][x] = '-'))
+
+  ya.forEach((y) => (bo[y][x1] = '┃'))
+  xa.forEach((x) => (bo[y1][x] = '━'))
+
+  return bo.map((bl) => bl.join('')).join('\n')
 }
 
 function useClock() {
   const [date] = useSeconds()
   const [clock, setClock] = useState<string>('')
+  const [gridClock, setGridClock] = useState<string>('')
 
   const h = date.getHours()
   const m = date.getMinutes()
+  const s = date.getSeconds()
 
   useEffect(() => {
-    setClock(anologClock(h, m))
+    setClock(makeAnologHourClock(h))
   }, [h, m])
-  return [clock, date] as const
+  useEffect(() => {
+    setGridClock(makeGridClock(date))
+  }, [+date])
+  return [clock, gridClock, date] as const
 }
 
 const padHex = (n: number) => (n + 12).toString(36)
@@ -64,14 +92,19 @@ function toHash2(sec: number) {
 }
 
 const Time = () => {
-  const [clock, date] = useClock()
+  const [clock, gridClock, date] = useClock()
   const sec = Math.floor(+date / 1000)
   const amount = 2147483647 - sec
 
   return (
     <Box>
-      <Box>
-        <Text>{clock}</Text>
+      <Box flexDirection="column">
+        <Box borderStyle="round">
+          <Text>{clock}</Text>
+        </Box>
+        <Box borderStyle="round">
+          <Text>{gridClock}</Text>
+        </Box>
       </Box>
       <Box flexDirection="column">
         <Text>{sec}</Text>

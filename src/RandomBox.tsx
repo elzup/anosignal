@@ -1,4 +1,4 @@
-import { Box, Text, DOMElement, measureElement } from 'ink'
+import { Box, Text } from 'ink'
 import * as React from 'react'
 
 const { useEffect, useState } = React
