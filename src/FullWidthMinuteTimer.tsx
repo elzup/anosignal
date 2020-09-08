@@ -6,24 +6,37 @@ const MIN = 60 * 1000
 
 const useProgress = () => {
   const [width, setWidth] = useState<number>(8)
-  const [rate, setRate] = useState<number>(0)
+  const [count, setCount] = useState<number>(0)
+  const [plot, setPlot] = useState<{ big: number; small: number }>({
+    big: 0,
+    small: 0,
+  })
   useEffect(() => {
     setWidth(process.stdout.columns)
   }, [])
   useEffect(() => {
     const si = setInterval(() => {
-      const t = +new Date() % MIN
-      setRate(t / MIN)
-    }, 60000 / width)
+      setCount((c) => (c + 1) % (6 * width))
+    }, 60000 / width / 6)
     return () => clearInterval(si)
   }, [width])
-  return [rate, width]
+  useEffect(() => {
+    setPlot({ big: Math.floor(count / 6), small: count % 6 })
+  }, [count])
+
+  return [count, width, plot] as const
 }
+
+const plotLib = ['⠂', '⠃', '⠇', '⠗', '⠟', '⠿']
+const smallPlot = (v: number) => {
+  return plotLib[v] || ' '
+}
+
 const FullWidthMinuteTimer = () => {
-  const [rate, width] = useProgress()
+  const [, width, plot] = useProgress()
   return (
     <Box width={width}>
-      <Text>{'='.repeat(Math.floor(rate * width)) + '>'}</Text>
+      <Text>{plotLib[5].repeat(plot.big) + smallPlot(plot.small)}</Text>
     </Box>
   )
 }
