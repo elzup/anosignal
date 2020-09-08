@@ -8,20 +8,28 @@ const { useState, useEffect } = React
 type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 
 function anologClock(h: number, m: number): string {
-  const line1 = [...` .  .  .  . `]
-  const line2 = [...` .  .  .  . `]
-  const line1pos = `6789abcdefgh`
-  const line2pos = `543210nmlkji`
-  const hs = h.toString(24)
-  const hi1 = line1pos.indexOf(hs)
-  const hi2 = line2pos.indexOf(hs)
-  if (hi1 >= 0) {
-    line1[hi1] = '#'
-  } else {
-    line2[hi2] = '#'
-  }
+  const lines = [
+    [...`┏━━┻━┓`], // base
+    [...`┗━━━┓┃`],
+    [...`┏━┻━┛┃`],
+    [...`┗━━━━┛`],
+  ]
+  const linesPos = [
+    `89abcd`, // 0 ~ 24
+    `76543e`,
+    `mn012f`,
+    `lkjihg`,
+  ]
 
-  return `|${line1.join('')}|\n|${line2.join('')}|`
+  const hs = h.toString(24)
+
+  const clockLines = linesPos.map((linep, i) => {
+    const hi = linep.indexOf(hs)
+    if (hi < 0) return lines[i].join('')
+    lines[i][hi] = '#'
+    return lines[i].join('')
+  })
+  return clockLines.map((s) => `|${s}|`).join('\n')
 }
 
 function useClock() {
