@@ -75,15 +75,13 @@ const Time = () => {
       </Box>
       <Box flexDirection="column">
         <Text>{sec}</Text>
-        <Spacer />
         <Text>{toHexTime(date)}</Text>
-        <Spacer />
         <Text>{toHash(sec)}</Text>
         <Text>{toHash2(sec)}</Text>
-        <Text>0b{sec.toString(2)}</Text>
+        <Text>{sec.toString(2)}</Text>
         <Text>{sec.toString(4)}</Text>
-        <Text>0{sec.toString(8)}</Text>
-        <Text>0x{sec.toString(16)}</Text>
+        <Text>{sec.toString(8)}</Text>
+        <Text>{sec.toString(16)}</Text>
         <Text>{sec.toString(36)}</Text>
         <Text>2038_-{amount}</Text>
       </Box>
