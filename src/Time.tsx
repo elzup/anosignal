@@ -7,18 +7,18 @@ const { useState, useEffect } = React
 
 function makeAnologWeekClock(w: number): string {
   const lines = [
-    [...`┏━━━┓`], // base
-    [...`┗━━━┛`],
+    [...`┏□━━━━━━━□┓`], // base
+    [...`┗□━□━□━□━□┛`],
   ]
   const linesPos = [
-    `0...6`, // 0 ~ 24
-    `12345`,
+    `.0.......6.`, // 0 ~ 24
+    `.1.2.3.4.5.`,
   ]
 
   const clockLines = linesPos.map((linep, i) => {
     const hi = linep.indexOf(w.toString())
     if (hi < 0) return lines[i].join('')
-    lines[i][hi] = '*'
+    lines[i][hi] = '▣'
     return lines[i].join('')
   })
 
@@ -45,7 +45,7 @@ function makeAnologHourClock(h: number): string {
   const clockLines = linesPos.map((linep, i) => {
     const hi = linep.indexOf(hs)
     if (hi < 0) return lines[i].join('')
-    lines[i][hi] = '#'
+    lines[i][hi] = '⊚'
     return lines[i].join('')
   })
   return clockLines.join('\n')
