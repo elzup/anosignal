@@ -19,3 +19,5 @@ export function rand(min: number, max: number, seed: number = 88675123) {
 export function randchr(seed: number, lib: string = 'abcdefg') {
   return lib[rand(0, lib.length - 1, seed)]
 }
+
+export const range = (v: number) => [...Array(v).keys()]

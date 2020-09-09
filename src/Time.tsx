@@ -1,7 +1,7 @@
 import { Box, Text } from 'ink'
 import * as React from 'react'
 import { useSeconds } from 'use-seconds'
-import { randchr } from './util'
+import { randchr, range } from './util'
 
 const { useState, useEffect } = React
 
@@ -53,7 +53,6 @@ function makeAnologHourClock(h: number): string {
 
 const SIZE_X = 10
 const SIZE_Y = 6
-const range = (v: number) => [...Array(v).keys()]
 function makeGridClock(date: Date): string {
   const xa = range(SIZE_X)
   const ya = range(SIZE_Y)
