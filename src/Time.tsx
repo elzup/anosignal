@@ -5,6 +5,27 @@ import { randchr } from './util'
 
 const { useState, useEffect } = React
 
+function makeAnologWeekClock(w: number): string {
+  const lines = [
+    [...`┏━━━┓`], // base
+    [...`┗━━━┛`],
+  ]
+  const linesPos = [
+    `0...6`, // 0 ~ 24
+    `12345`,
+  ]
+
+  const clockLines = linesPos.map((linep, i) => {
+    const hi = linep.indexOf(w.toString())
+    if (hi < 0) return lines[i].join('')
+    lines[i][hi] = '*'
+    return lines[i].join('')
+  })
+
+  console.log(w)
+  return clockLines.join('\n')
+}
+
 function makeAnologHourClock(h: number): string {
   const lines = [
     [...`┏━━━┻┓`], // base
@@ -56,19 +77,26 @@ function makeGridClock(date: Date): string {
 function useClock() {
   const [date] = useSeconds()
   const [clock, setClock] = useState<string>('')
+  const [weekClock, setWeekClock] = useState<string>('')
   const [gridClock, setGridClock] = useState<string>('')
 
+  const w = date.getDay()
   const h = date.getHours()
   const m = date.getMinutes()
-  const s = date.getSeconds()
 
+  useEffect(() => {
+    setGridClock(makeGridClock(date))
+  }, [+date])
   useEffect(() => {
     setClock(makeAnologHourClock(h))
   }, [h, m])
   useEffect(() => {
+    setWeekClock(makeAnologWeekClock(w))
+  }, [w])
+  useEffect(() => {
     setGridClock(makeGridClock(date))
   }, [+date])
-  return [clock, gridClock, date] as const
+  return [date, clock, gridClock, weekClock] as const
 }
 
 const padHex = (n: number) => (n + 12).toString(36)
@@ -92,21 +120,24 @@ function toHash2(sec: number) {
 }
 
 const Time = () => {
-  const [clock, gridClock, date] = useClock()
+  const [date, clock, gridClock, weekClock] = useClock()
   const sec = Math.floor(+date / 1000)
   const amount = 2147483647 - sec
 
   return (
     <Box>
       <Box flexDirection="column">
-        <Box borderStyle="round">
+        <Box borderStyle="single">
           <Text>{clock}</Text>
         </Box>
-        <Box borderStyle="round">
+        <Box borderStyle="single">
           <Text>{gridClock}</Text>
         </Box>
+        <Box borderStyle="single">
+          <Text>{weekClock}</Text>
+        </Box>
       </Box>
-      <Box flexDirection="column">
+      <Box flexDirection="column" marginLeft={1}>
         <Text>{sec}</Text>
         <Text>{toHexTime(date)}</Text>
         <Text>{toHash(sec)}</Text>
