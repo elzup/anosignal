@@ -78,10 +78,6 @@ const CodeBox = () => {
       width={width / 2}
       marginLeft={1}
     >
-      {/* <Text color="blue">{codes.length}</Text> */}
-      <Text color="blue" wrap="truncate">
-        aaaaaxxxxxxxxxxx11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-      </Text>
       {code.split('\n').map((line, i) => (
         <Text key={i} color="blue" wrap="truncate">
           {i} {line}
