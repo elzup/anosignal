@@ -1,11 +1,11 @@
-import { Box, Text } from 'ink'
+import { Box } from 'ink'
 import * as React from 'react'
-import Time from './Time'
-import FullWidthMinuteTimer from './FullWidthMinuteTimer'
-import Version from './Version'
-import RandomBox from './RandomBox'
-import MapBox from './components/MapBox'
 import CodeBox from './components/CodeBox'
+import FullWidthMinuteTimer from './components/FullWidthMinuteTimer'
+import MapBox from './components/MapBox'
+import RandomBox from './components/RandomBox'
+import Time from './components/Time'
+import Version from './components/Version'
 
 const App = () => {
   return (

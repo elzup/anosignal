@@ -1,7 +1,7 @@
 import { render } from 'ink'
 import * as React from 'react'
-import Ui from './ui'
+import App from './App'
 
 export default () => {
-  return render(<Ui />)
+  return render(<App />)
 }
