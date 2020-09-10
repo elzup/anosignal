@@ -1,7 +1,7 @@
 import { Box, Text } from 'ink'
 import * as React from 'react'
 import { useSeconds } from 'use-seconds'
-import { randchr, range } from './util'
+import { randchr, range } from '../util'
 
 const { useState, useEffect } = React
 

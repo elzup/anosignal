@@ -2,6 +2,7 @@ import { Box, Text } from 'ink'
 import * as React from 'react'
 import * as scrapeIt from 'scrape-it'
 import fetch from 'node-fetch'
+import { useWidth } from '../util-hooks'
 
 const LINE_NUM = 7
 const { useEffect, useState } = React
@@ -41,7 +42,7 @@ function normalizeLine(text: string, lineNum: number) {
   return (text + '\n'.repeat(lineNum)).split('\n').slice(0, lineNum).join('\n')
 }
 function codeFit(code: string, newLine: string) {
-  return normalizeLine(newLine + '\n' + code, LINE_NUM)
+  return normalizeLine(newLine + '\n' + normalizeLine(code, 4), LINE_NUM)
 }
 
 function useCode() {
@@ -64,15 +65,28 @@ function useCode() {
     return () => clearInterval(si)
   }, [codes])
 
-  return [code, codes]
+  return [code, codes] as const
 }
 const CodeBox = () => {
+  const width = useWidth()
   const [code, codes] = useCode()
 
   return (
-    <Box flexDirection="column" height={LINE_NUM} borderColor="gray">
+    <Box
+      flexDirection="column"
+      borderColor="gray"
+      width={width / 2}
+      marginLeft={1}
+    >
       {/* <Text color="blue">{codes.length}</Text> */}
-      <Text color="blue">{code}</Text>
+      <Text color="blue" wrap="truncate">
+        aaaaaxxxxxxxxxxx11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+      </Text>
+      {code.split('\n').map((line, i) => (
+        <Text key={i} color="blue" wrap="truncate">
+          {i} {line}
+        </Text>
+      ))}
     </Box>
   )
 }
