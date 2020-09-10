@@ -3,6 +3,7 @@ import * as React from 'react'
 import * as scrapeIt from 'scrape-it'
 import fetch from 'node-fetch'
 
+const LINE_NUM = 7
 const { useEffect, useState } = React
 
 type QuestionsResponse = {
@@ -23,51 +24,55 @@ const qurl =
   'https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&site=stackoverflow'
 async function getRandomCodes() {
   const res = await fetch(qurl)
+  if (!res.ok) return []
   const body: QuestionsResponse = await res.json()
 
-  const codesPromise = body.items
-    .map(async ({ link }) => {
-      const { data } = await scrapeIt<{ codetext: string }>(link, {
-        codetext: '.postcell pre code',
-      })
-      return data.codetext
+  const codesPromise = body.items.map(async ({ link }) => {
+    const { data } = await scrapeIt<{ codetext: string }>(link, {
+      codetext: '.postcell pre code',
     })
-    .filter(Boolean)
-  return await Promise.all(codesPromise)
+    return data.codetext.trim()
+  })
+
+  return (await Promise.all(codesPromise)).filter(Boolean)
 }
 
-function codeFit(code: string) {
-  return (code + '\n\n').split('\n').slice(0, 2).join('\n')
+function normalizeLine(text: string, lineNum: number) {
+  return (text + '\n'.repeat(lineNum)).split('\n').slice(0, lineNum).join('\n')
+}
+function codeFit(code: string, newLine: string) {
+  return normalizeLine(newLine + '\n' + code, LINE_NUM)
 }
 
 function useCode() {
-  const [code, setCode] = useState<string>('')
+  const [code, setCode] = useState<string>('\n'.repeat(LINE_NUM - 1))
   const [codes, setCodes] = useState<string[]>([])
   useEffect(() => {
-    const si = setInterval(() => {
+    if (codes.length > 0) return
+    getRandomCodes().then((codes) => {
+      setCode((code) => codeFit(code, codes.pop() || ''))
+      setCodes(codes)
+    })
+  }, [codes])
+  useEffect(() => {
+    if (codes.length === 0) return
+    const si = setTimeout(() => {
       const remCodes = [...codes]
-      const newCode = remCodes.pop()
-      if (!newCode) {
-        getRandomCodes().then((codes) => {
-          setCode(codeFit(codes.pop() || ''))
-          setCodes(codes)
-        })
-      } else {
-        setCode(codeFit(newCode))
-        setCodes(remCodes)
-      }
-    }, 5000)
+      setCode((code) => codeFit(code, remCodes.pop() || ''))
+      setCodes(remCodes)
+    }, 60 * 1000)
     return () => clearInterval(si)
-  }, [])
+  }, [codes])
 
-  return [code]
+  return [code, codes]
 }
 const CodeBox = () => {
-  const [code] = useCode()
+  const [code, codes] = useCode()
 
   return (
-    <Box flexDirection="column" height="3" borderColor="gray">
-      <Text color="magenta">{code}</Text>
+    <Box flexDirection="column" height={LINE_NUM} borderColor="gray">
+      {/* <Text color="blue">{codes.length}</Text> */}
+      <Text color="blue">{code}</Text>
     </Box>
   )
 }

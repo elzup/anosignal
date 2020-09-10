@@ -17,8 +17,10 @@ const App = () => {
         </Box>
         <RandomBox />
       </Box>
-      <MapBox />
-      <CodeBox />
+      <Box>
+        <MapBox />
+        <CodeBox />
+      </Box>
       <Version />
     </Box>
   )
