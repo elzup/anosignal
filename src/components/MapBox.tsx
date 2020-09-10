@@ -36,10 +36,12 @@ const MapBox = () => {
 
   return (
     <Box flexDirection="column">
-      {areas.map((row) => (
-        <Box>
-          {row.map((area) => (
-            <Text color={['green', 'white'][area.state]}>□</Text>
+      {areas.map((row, ri) => (
+        <Box key={ri}>
+          {row.map((area, ai) => (
+            <Text key={ai} color={['green', 'white'][area.state]}>
+              □
+            </Text>
           ))}
         </Box>
       ))}

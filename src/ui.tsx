@@ -5,6 +5,7 @@ import FullWidthMinuteTimer from './FullWidthMinuteTimer'
 import Version from './Version'
 import RandomBox from './RandomBox'
 import MapBox from './components/MapBox'
+import CodeBox from './components/CodeBox'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <RandomBox />
       </Box>
       <MapBox />
+      <CodeBox />
       <Version />
     </Box>
   )
