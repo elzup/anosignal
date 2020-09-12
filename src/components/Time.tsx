@@ -73,14 +73,14 @@ function makeGridClock(date: Date): string {
   return bo.map((bl) => bl.join('')).join('\n')
 }
 
-const toStackLineStr = (v: number, stump: string) => {
+export const toStackLineStr = (v: number) => {
   return range(5)
     .map((i: number) => {
       const lib = i + 1 > v / 10 ? `.┓┳` : `┃┫╋`
       const v1 = v % 10
-      if (v1 / 2 > i) return lib[2]
-      if (v1 / 2 < i) return lib[0]
-      return lib[(v1 % 2) + 1]
+      if (v1 <= i * 2) return lib[0]
+      if (v1 >= (i + 1) * 2) return lib[2]
+      return lib[1]
     })
     .join('')
 }
@@ -90,8 +90,8 @@ function makeStackClock(date: Date): string {
   const s = date.getSeconds()
   const lines: string[] = []
   const digit2 = (v: number) => `${v}`.padStart(2, '0')
-  lines.push(digit2(m) + ' ' + toStackLineStr(m, '╋┛┏'))
-  lines.push(digit2(s) + ' ' + toStackLineStr(s, '┼┘┌'))
+  lines.push(digit2(m) + ' ' + toStackLineStr(m))
+  lines.push(digit2(s) + ' ' + toStackLineStr(s))
 
   return lines.join('\n')
 }
