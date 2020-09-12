@@ -28,10 +28,10 @@ function makeAnologWeekClock(w: number): string {
 
 function makeAnologHourClock(h: number): string {
   const lines = [
-    [...`┏━━━┻┓`], // base
-    [...`┗━━━┓┃`],
-    [...`┏━┻━┛┃`],
-    [...`┗━━━━┛`],
+    [...`┌┴──╂┐`], // base
+    [...`└┼──┬│`],
+    [...`┌─╂─┘├`],
+    [...`┴──┼─┘`],
   ]
   const linesPos = [
     `89abcd`, // 0 ~ 24
