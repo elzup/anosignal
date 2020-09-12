@@ -73,11 +73,35 @@ function makeGridClock(date: Date): string {
   return bo.map((bl) => bl.join('')).join('\n')
 }
 
+const toStackLineStr = (v: number, stump: string) => {
+  return range(5)
+    .map((i: number) => {
+      const lib = i + 1 > v / 10 ? `.┓┳` : `┃┫╋`
+      const v1 = v % 10
+      if (v1 / 2 > i) return lib[2]
+      if (v1 / 2 < i) return lib[0]
+      return lib[(v1 % 2) + 1]
+    })
+    .join('')
+}
+
+function makeStackClock(date: Date): string {
+  const m = date.getMinutes()
+  const s = date.getSeconds()
+  const lines: string[] = []
+  const digit2 = (v: number) => `${v}`.padStart(2, '0')
+  lines.push(digit2(m) + ' ' + toStackLineStr(m, '╋┛┏'))
+  lines.push(digit2(s) + ' ' + toStackLineStr(s, '┼┘┌'))
+
+  return lines.join('\n')
+}
+
 function useClock() {
   const [date] = useSeconds()
   const [clock, setClock] = useState<string>('')
   const [weekClock, setWeekClock] = useState<string>('')
   const [gridClock, setGridClock] = useState<string>('')
+  const [stackClock, setStackClock] = useState<string>('')
 
   const w = date.getDay()
   const h = date.getHours()
@@ -85,6 +109,7 @@ function useClock() {
 
   useEffect(() => {
     setGridClock(makeGridClock(date))
+    setStackClock(makeStackClock(date))
   }, [+date])
   useEffect(() => {
     setClock(makeAnologHourClock(h))
@@ -95,7 +120,7 @@ function useClock() {
   useEffect(() => {
     setGridClock(makeGridClock(date))
   }, [+date])
-  return [date, clock, gridClock, weekClock] as const
+  return [date, clock, gridClock, weekClock, stackClock] as const
 }
 
 const padHex = (n: number) => (n + 12).toString(36)
@@ -119,7 +144,7 @@ function toHash2(sec: number) {
 }
 
 const Time = () => {
-  const [date, clock, gridClock, weekClock] = useClock()
+  const [date, clock, gridClock, weekClock, stackClock] = useClock()
   const sec = Math.floor(+date / 1000)
   const amount = 2147483647 - sec
 
@@ -131,6 +156,9 @@ const Time = () => {
         </Box>
         <Box borderStyle="single">
           <Text>{gridClock}</Text>
+        </Box>
+        <Box borderStyle="single">
+          <Text>{stackClock}</Text>
         </Box>
         <Box borderStyle="single">
           <Text>{weekClock}</Text>

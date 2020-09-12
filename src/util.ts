@@ -20,4 +20,7 @@ export function randchr(seed: number, lib: string = 'abcdefg') {
   return lib[rand(0, lib.length - 1, seed)]
 }
 
-export const range = (v: number) => [...Array(v).keys()]
+export const range = (a: number, b?: number) => {
+  if (!b) return [...Array(a).keys()]
+  return [...Array(b).keys()].map((v) => v + a)
+}

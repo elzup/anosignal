@@ -23,7 +23,7 @@ function useJapan() {
   useEffect(() => {
     const t = range(7).map(() =>
       range(7).map(() => ({
-        state: 0,
+        state: Math.floor(Math.random() * 5),
       }))
     )
     setAreas(t)
@@ -39,8 +39,11 @@ const MapBox = () => {
       {areas.map((row, ri) => (
         <Box key={ri}>
           {row.map((area, ai) => (
-            <Text key={ai} color={['green', 'white'][area.state]}>
-              □
+            <Text
+              key={ai}
+              color={['green', 'white', 'cyan', 'blue', 'red'][area.state]}
+            >
+              {' *'}
             </Text>
           ))}
         </Box>
