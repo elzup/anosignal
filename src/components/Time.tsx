@@ -144,25 +144,16 @@ function toHash2(sec: number) {
 }
 
 const Time = () => {
-  const [date, clock, gridClock, weekClock, stackClock] = useClock()
+  const [date, clock, _gridClock, weekClock, stackClock] = useClock()
   const sec = Math.floor(+date / 1000)
   const amount = 2147483647 - sec
 
   return (
     <Box>
-      <Box flexDirection="column">
-        <Box borderStyle="single">
-          <Text>{clock}</Text>
-        </Box>
-        <Box borderStyle="single">
-          <Text>{gridClock}</Text>
-        </Box>
-        <Box borderStyle="single">
-          <Text>{stackClock}</Text>
-        </Box>
-        <Box borderStyle="single">
-          <Text>{weekClock}</Text>
-        </Box>
+      <Box flexDirection="column" borderStyle="single">
+        <Text>{weekClock}</Text>
+        <Text>{clock}</Text>
+        <Text>{stackClock}</Text>
       </Box>
       <Box flexDirection="column" marginLeft={1}>
         <Text>{sec}</Text>
