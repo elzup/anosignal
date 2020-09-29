@@ -6,11 +6,13 @@ import MapBox from './components/MapBox'
 import RandomBox from './components/RandomBox'
 import Time from './components/Time'
 import Version from './components/Version'
+import Status from './components/Status'
 
 const App = () => {
   return (
     <Box flexDirection="column">
       <FullWidthMinuteTimer />
+      <Status />
       <Box>
         <Box flexGrow={1}>
           <Time />
