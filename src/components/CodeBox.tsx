@@ -1,7 +1,7 @@
 import { Box, Text } from 'ink'
+import fetch from 'node-fetch'
 import * as React from 'react'
 import * as scrapeIt from 'scrape-it'
-import fetch from 'node-fetch'
 import { useWidth } from '../util-hooks'
 
 const LINE_NUM = 7
@@ -79,7 +79,7 @@ const CodeBox = () => {
       marginLeft={1}
     >
       {code.split('\n').map((line, i) => (
-        <Text key={i} color="blue" wrap="truncate">
+        <Text key={i} wrap="truncate">
           {i} {line}
         </Text>
       ))}
