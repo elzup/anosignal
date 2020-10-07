@@ -7,6 +7,7 @@ import RandomBox from './components/RandomBox'
 import Time from './components/Time'
 import Version from './components/Version'
 import Status from './components/Status'
+import Scan from './components/Scan'
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <MapBox />
         <CodeBox />
       </Box>
+      <Scan />
       <Version />
     </Box>
   )
