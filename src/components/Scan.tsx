@@ -1,7 +1,8 @@
 import * as convert from 'color-convert'
 import { Box, Text } from 'ink'
 import * as React from 'react'
-import { range } from '../util'
+import { useSeconds } from 'use-seconds'
+import { rand, randseed, range } from '../util'
 
 const { useEffect, useState } = React
 
@@ -10,19 +11,23 @@ type Cell = {
   chara: string
   color: string
 }
+const W = 32
+const H = 8
+const box = range(H).map(() => range(W))
 
 function useCell() {
   const [cells, setCells] = useState<Cell[][]>([])
+  const [sec] = useSeconds()
   useEffect(() => {
-    const t = range(7).map(() =>
-      range(7).map(() => ({
-        state: Math.floor(Math.random() * 5),
-        chara: '#',
-        color: convert.hsl.hex([Math.floor(Math.random() * 360), 50, 50]),
+    const t = box.map((l, h) =>
+      l.map((_, w) => ({
+        state: 0,
+        chara: '._+*#'[randseed(0, 5, h + w * H + Date.now())],
+        color: convert.hsl.hex([Math.floor(rand(0, 360)), 50, 50]),
       }))
     )
     setCells(t)
-  }, [])
+  }, [+sec])
 
   return [cells]
 }
