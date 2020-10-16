@@ -1,12 +1,11 @@
-import * as React from 'react'
-import * as chalk from 'chalk'
-import { render } from 'ink-testing-library'
-import { advanceBy, advanceTo, clear } from 'jest-date-mock'
-import App from '../App'
 import { readFileSync } from 'fs'
+import { render } from 'ink-testing-library'
+import { advanceTo, clear } from 'jest-date-mock'
+import * as React from 'react'
+import App from '../App'
+import { getRandomCodes } from '../service'
 
 jest.mock('../service')
-import { getRandomCodes } from '../service'
 
 // @ts-ignore
 getRandomCodes.mockImplementation(() => new Promise(obj))
