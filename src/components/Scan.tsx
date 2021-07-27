@@ -22,23 +22,28 @@ const limit = (v: number, min: number, max: number) =>
   Math.min(Math.max(v, min), max)
 
 // -0.5~0.5 to 0~4
-const normalize = (n: number) => limit(Math.floor((n + 0.5) * 4), 0, 4)
+const normalize = (n: number) => limit(Math.floor((n + 0.5) * 4 * 0.8), 0, 4)
+const normalize360 = (n: number) =>
+  limit(Math.floor((n + 0.5) * 180 + 100), 0, 360)
 
 function useCell() {
   const [cells, setCells] = useState<Cell[][]>([])
-  const [sec] = useSeconds()
+  const [sec] = useSeconds(0, 1000)
+
+  const ts = +sec
   useEffect(() => {
     const t = box.map((l, h) =>
-      l.map((_, w) => ({
-        state: 0,
-        chara: '._+*#'[
-          normalize(simplex.noise3D(w * 0.1, h * 0.1, Date.now() * 0.0001))
-        ],
-        color: convert.hsl.hex([Math.floor(rand(0, 360)), 50, 50]),
-      }))
+      l.map((_, w) => {
+        const r = simplex.noise3D(w * 0.1, h * 0.2, ts * 0.0001)
+        return {
+          state: r,
+          chara: '._+*#'[normalize(r)],
+          color: '#' + convert.hsl.hex([normalize360(r), 50, 50]),
+        }
+      })
     )
     setCells(t)
-  }, [+sec])
+  }, [ts])
 
   return [cells]
 }
