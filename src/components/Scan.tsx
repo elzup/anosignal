@@ -28,13 +28,13 @@ const normalize360 = (n: number) =>
 
 function useCell() {
   const [cells, setCells] = useState<Cell[][]>([])
-  const [sec] = useSeconds(0, 1000 * 10)
+  const [sec] = useSeconds(0, 200)
 
   const ts = +sec
   useEffect(() => {
     const t = box.map((l, h) =>
       l.map((_, w) => {
-        const r = simplex.noise3D(w * 0.1, h * 0.2, ts / 1000 / 10 / 10)
+        const r = simplex.noise3D(w * 0.1, h * 0.2, ts / 1000 / 10)
         return {
           state: r,
           chara: '._+*#'[normalize(r)],
@@ -53,7 +53,10 @@ const Scan = () => {
 
   return (
     <Box flexDirection="column">
-      {cells.map((row, ri) => (
+      <Text>
+        {cells.map((row) => row.map((cell) => cell.chara).join('')).join('\n')}
+      </Text>
+      {/* {cells.map((row, ri) => (
         <Box key={ri}>
           {row.map((cell, ai) => (
             <Text key={ai} color={cell.color}>
@@ -61,7 +64,7 @@ const Scan = () => {
             </Text>
           ))}
         </Box>
-      ))}
+      ))} */}
     </Box>
   )
 }
