@@ -3,6 +3,7 @@ import { Box, Text } from 'ink'
 import * as React from 'react'
 import { useSeconds } from 'use-seconds'
 import { rand, randseed, range } from '../util'
+import * as SimplexNoise from 'simplex-noise'
 
 const { useEffect, useState } = React
 
@@ -14,6 +15,14 @@ type Cell = {
 const W = 32
 const H = 8
 const box = range(H).map(() => range(W))
+const simplex = new SimplexNoise()
+
+// limit min max
+const limit = (v: number, min: number, max: number) =>
+  Math.min(Math.max(v, min), max)
+
+// -0.5~0.5 to 0~4
+const normalize = (n: number) => limit(Math.floor((n + 0.5) * 4), 0, 4)
 
 function useCell() {
   const [cells, setCells] = useState<Cell[][]>([])
@@ -22,7 +31,9 @@ function useCell() {
     const t = box.map((l, h) =>
       l.map((_, w) => ({
         state: 0,
-        chara: '._+*#'[randseed(0, 5, h + w * H + Date.now())],
+        chara: '._+*#'[
+          normalize(simplex.noise3D(w * 0.1, h * 0.1, Date.now() * 0.0001))
+        ],
         color: convert.hsl.hex([Math.floor(rand(0, 360)), 50, 50]),
       }))
     )
