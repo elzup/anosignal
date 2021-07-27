@@ -28,13 +28,13 @@ const normalize360 = (n: number) =>
 
 function useCell() {
   const [cells, setCells] = useState<Cell[][]>([])
-  const [sec] = useSeconds(0, 1000)
+  const [sec] = useSeconds(0, 1000 * 10)
 
   const ts = +sec
   useEffect(() => {
     const t = box.map((l, h) =>
       l.map((_, w) => {
-        const r = simplex.noise3D(w * 0.1, h * 0.2, ts * 0.0001)
+        const r = simplex.noise3D(w * 0.1, h * 0.2, ts / 1000 / 10 / 10)
         return {
           state: r,
           chara: '._+*#'[normalize(r)],
