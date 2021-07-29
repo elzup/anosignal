@@ -2,6 +2,8 @@
 
 Nannka kakkoii cli
 
+[![asciicast](https://asciinema.org/a/w1uickh4DWUf24NHucKk3yVIL.svg)](https://asciinema.org/a/w1uickh4DWUf24NHucKk3yVIL)
+
 - timer
 - graph
 - crypto
